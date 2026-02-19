@@ -1,29 +1,25 @@
-  GNU nano 8.7         .github/workflows/learn-github-actions.yml         Modified
-b Actions
-on: [push]
+name: learn-github-actions
+run-name: ${{ github.actor }} is running CI
+
+on:
+  push:
+  pull_request:
 
 jobs:
-  check-bats-version:
+  ci-tests:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install -g bats
-      - run: bats -v
 
-b Actions
-on: [push]
+      - name: Install dependencies
+        run: npm install
 
-jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - run: npm install -g bats
-      - run: bats -v
-
+      - name: Run tests
+        run: npm test
